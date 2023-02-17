@@ -20,20 +20,63 @@ string toUpperStr(string x){
     return y;
 }
 
-void importDataFromFile(){
-
+void importDataFromFile(string filename,vector<string> &names,vector<int> &scores,vector<char> &grades){
+    ifstream source;
+    source.open(filename.c_str());
+    string x ;
+    while(getline(source,x)){
+        char format[] = "%[^:]: %d %d %d" ;
+        char n[100] ;
+        int g1 ;
+        int g2 ;
+        int g3 ;
+        int sumscore ;
+        
+        sscanf(x.c_str(),format,n,&g1,&g2,&g3);
+        sumscore = g1 + g2 + g3 ;
+        char gradesA = score2grade(sumscore) ;
+        string cn = n ;
+        names.push_back(cn) ;
+        scores.push_back(sumscore) ;
+        grades.push_back(gradesA) ;
+    }
 }
 
-void getCommand(){
-
+void getCommand(string &command,string &key){
+    cout << "Please input your command: ";
+    string x1 ;
+    getline(cin,x1);
+    int start = 0 ;
+    int end = x1.find_first_of(" ");
+    command = x1.substr(start,end-start) ;
+    start = end + 1 ;
+    end = x1.find_first_of(" ",start);
+    key = x1.substr(start);
 }
 
-void searchName(){
-
+void searchName(vector<string> names,vector<int> scores,vector<char> grades,string key){
+    cout << "---------------------------------"<< endl ;
+    for(unsigned int i = 0 ; i < names.size() ;i++ ){
+        if (toUpperStr(names[i]) == key){
+            cout << names[i] << "'s score = " << scores[i] << endl ;   
+            cout << names[i] << "'s grade = " << grades[i] << endl;     
+            cout << "---------------------------------"<< endl; 
+            return ; 
+        }
+    }
+    cout << "Cannot found."<< endl ;
+    cout << "---------------------------------"<< endl ;
 }
 
-void searchGrade(){
+void searchGrade(vector<string> names,vector<int> scores,vector<char> grades,string key){
+    cout << "---------------------------------"<< endl ;
+    for(unsigned int i = 0 ; i < grades.size() ;i++ ){
+        if (grades[i] == key.c_str()[0]){
+            cout << names[i] << " (" << scores[i] << ")" << endl ;
 
+        }
+    }
+    cout << "---------------------------------"<< endl ;
 }
 
 
